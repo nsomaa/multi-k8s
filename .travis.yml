@@ -1,7 +1,6 @@
 language: bash
 
 sudo: required
-
 services:
   - docker
 env:
@@ -19,6 +18,10 @@ before_install:
   - gcloud config set compute/zone us-east1-b
   - gcloud container clusters get-credentials multi-cluster
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t nsoma75/react-test -f ./client/Dockerfile.dev ./client
+
+scripts:
+  - docker run -t nsoma75/react-test npm test -- --coverage
 
 deploy:
   provider: script
